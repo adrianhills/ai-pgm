@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ai-pgm — Claude Code skills for PgMs & TPMs</title>
+<meta name="description" content="A kit of 20 Claude Code skills for Program Managers and TPMs. Full program-lifecycle automation grounded in real program data — built and maintained by Adrian Hills." />
+<meta name="author" content="Adrian Hills" />
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="ai-pgm — Claude Code skills for PgMs & TPMs" />
+<meta property="og:description" content="20 Claude Code skills covering the full program-management lifecycle. Reclaim 20+ hours a week of execution overhead." />
+<meta property="og:url" content="https://adrianhills.github.io/ai-pgm/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #050b14;
+    --surface:   #0a1220;
+    --surface-2: #0d1626;
+    --border:    #162033;
+    --border-hi: #24324d;
+    --text:      #f2f6ff;
+    --body:      #d4dff0;
+    --muted:     #6a80a8;
+    --dim:       #3d5070;
+    --accent:    #4a8fd4;
+    --accent-hi: #7ab8f5;
+    --max:       960px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono: "SF Mono", "Fira Code", "Fira Mono", ui-monospace, monospace;
+
+    /* phase + competency hues */
+    --plan:   #4a8fd4;  --ops:    #3fb27f;  --risk:   #d4655a;
+    --comms:  #d99a4a;  --review: #9a7ad4;
+  }
+
+  html { font-size: 17px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.65;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* fixed accent bar */
+  body::before {
+    content: '';
+    position: fixed; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, #2563a8 0%, #4a8fd4 50%, #7ab8f5 100%);
+    z-index: 200;
+  }
+
+  a { color: var(--accent-hi); text-decoration: none; }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
+
+  /* ---------- nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(5, 11, 20, 0.82);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: var(--max); margin: 0 auto; padding: 0.85rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .brand { font-family: var(--mono); font-size: 0.9rem; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+  .brand .dim { color: var(--dim); }
+  .nav-links { display: flex; gap: 1.4rem; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .nav-links a { color: var(--muted); transition: color 0.15s; }
+  .nav-links a:hover { color: var(--accent-hi); }
+  @media (max-width: 640px) { .nav-links { display: none; } }
+
+  /* ---------- hero ---------- */
+  header.hero { padding: 5rem 0 3.5rem; position: relative; }
+  header.hero::after {
+    content: ''; position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+    width: 720px; height: 480px; max-width: 120vw;
+    background: radial-gradient(ellipse at center, rgba(74,143,212,0.13) 0%, rgba(74,143,212,0) 68%);
+    pointer-events: none; z-index: -1;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em;
+    color: var(--accent-hi); background: rgba(74,143,212,0.08);
+    border: 1px solid var(--border-hi); border-radius: 100px;
+    padding: 0.35rem 0.85rem; margin-bottom: 1.6rem;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ops); box-shadow: 0 0 8px var(--ops); }
+  h1.title {
+    font-size: clamp(2.1rem, 5.5vw, 3.4rem); font-weight: 800; line-height: 1.05;
+    letter-spacing: -0.035em; margin-bottom: 1.3rem;
+  }
+  h1.title .grad {
+    background: linear-gradient(95deg, #7ab8f5 0%, #4a8fd4 60%, #9a7ad4 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .lede { font-size: 1.13rem; color: var(--body); max-width: 640px; line-height: 1.6; }
+  .lede strong { color: var(--text); font-weight: 700; }
+
+  .callout-hero {
+    display: flex; align-items: center; gap: 0.9rem;
+    margin-top: 2rem; padding: 1.1rem 1.3rem;
+    background: linear-gradient(100deg, rgba(74,143,212,0.10), rgba(74,143,212,0.02));
+    border: 1px solid var(--border-hi); border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0; max-width: 640px;
+  }
+  .callout-hero .ic { font-size: 1.4rem; }
+  .callout-hero p { font-size: 0.97rem; color: var(--body); }
+  .callout-hero strong { color: var(--accent-hi); }
+
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.8rem; }
+  .pill {
+    font-family: var(--mono); font-size: 0.68rem; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 100px; padding: 0.25rem 0.7rem;
+  }
+
+  /* ---------- stat strip ---------- */
+  .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden; margin: 3.5rem 0 1rem;
+  }
+  .stat { background: var(--surface); padding: 1.3rem 1rem; text-align: center; }
+  .stat .num {
+    font-size: 1.7rem; font-weight: 800; letter-spacing: -0.03em;
+    background: linear-gradient(180deg, #fff, #9fc4f0);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .stat .lab { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-top: 0.25rem; }
+  @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+  /* ---------- section ---------- */
+  section { padding: 3.5rem 0 0.5rem; }
+  .sec-head { margin-bottom: 1.8rem; }
+  .sec-kicker { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.13em; color: var(--accent); font-weight: 700; margin-bottom: 0.6rem; }
+  .sec-title { font-size: 1.55rem; font-weight: 800; letter-spacing: -0.025em; }
+  .sec-sub { color: var(--muted); margin-top: 0.5rem; max-width: 620px; font-size: 0.97rem; }
+
+  /* ---------- filters + table ---------- */
+  .filterbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; }
+  .filter-group { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+  .filter-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin-right: 0.2rem; }
+  .chip {
+    font-size: 0.74rem; font-weight: 600; color: var(--muted);
+    background: var(--surface); border: 1px solid var(--border); border-radius: 100px;
+    padding: 0.3rem 0.8rem; cursor: pointer; transition: all 0.15s; user-select: none;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+  }
+  .chip:hover { border-color: var(--border-hi); color: var(--text); }
+  .chip .swatch { width: 7px; height: 7px; border-radius: 50%; }
+  .chip.active { color: #fff; border-color: var(--accent); background: rgba(74,143,212,0.14); }
+  .chip.active.c-plan   { border-color: var(--plan);   background: rgba(74,143,212,0.16); }
+  .chip.active.c-ops    { border-color: var(--ops);    background: rgba(63,178,127,0.16); }
+  .chip.active.c-risk   { border-color: var(--risk);   background: rgba(212,101,90,0.16); }
+  .chip.active.c-comms  { border-color: var(--comms);  background: rgba(217,154,74,0.16); }
+  .chip.active.c-review { border-color: var(--review); background: rgba(154,122,212,0.16); }
+  .chip.reset { margin-left: auto; color: var(--dim); }
+  .chip.reset:hover { color: var(--accent-hi); }
+
+  .count { font-size: 0.74rem; color: var(--dim); font-family: var(--mono); margin-left: 0.2rem; }
+
+  .table { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .row {
+    display: grid;
+    grid-template-columns: 200px 1fr 130px;
+    gap: 1rem; align-items: center;
+    padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
+    background: var(--surface); transition: background 0.15s;
+  }
+  .row:last-child { border-bottom: none; }
+  .row:hover { background: var(--surface-2); }
+  .row.head {
+    background: var(--bg); font-size: 0.66rem; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--dim); font-weight: 700; padding: 0.7rem 1.25rem;
+  }
+  .row.hidden { display: none; }
+
+  .skill-name { font-family: var(--mono); font-size: 0.92rem; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 0.55rem; }
+  .skill-name .bar { width: 3px; height: 1.05em; border-radius: 2px; flex-shrink: 0; }
+  .skill-does { font-size: 0.9rem; color: var(--body); line-height: 1.5; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.45rem; }
+  .tag {
+    font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 0.1em 0.5em; border-radius: 3px; border: 1px solid var(--border-hi); color: var(--muted);
+  }
+  .skill-time { font-family: var(--mono); font-size: 0.74rem; color: var(--accent-hi); text-align: right; }
+
+  @media (max-width: 720px) {
+    .row { grid-template-columns: 1fr; gap: 0.4rem; padding: 1.1rem 1rem; }
+    .row.head { display: none; }
+    .skill-time { text-align: left; }
+    .skill-time::before { content: "⏱ "; opacity: 0.6; }
+  }
+
+  /* ---------- chains ---------- */
+  .chains { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+  @media (max-width: 720px) { .chains { grid-template-columns: 1fr; } }
+  .chain {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.15rem 1.25rem; position: relative; overflow: hidden;
+  }
+  .chain::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
+  .chain.c-blue::before   { background: var(--plan); }
+  .chain.c-red::before    { background: var(--risk); }
+  .chain.c-purple::before { background: var(--review); }
+  .chain.c-green::before  { background: var(--ops); }
+  .chain.c-gray::before   { background: var(--muted); }
+  .chain.c-yellow::before { background: var(--comms); }
+  .chain.c-orange::before { background: #d9794a; }
+  .chain h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+  .chain .flow { font-family: var(--mono); font-size: 0.76rem; color: var(--accent-hi); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem 0.7rem; margin-bottom: 0.6rem; line-height: 1.5; word-break: break-word; }
+  .chain p { font-size: 0.84rem; color: var(--muted); line-height: 1.5; }
+
+  /* ---------- reliability ---------- */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+  @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem 1.3rem; transition: border-color 0.15s; }
+  .card:hover { border-color: var(--border-hi); }
+  .card .ic { font-size: 1.3rem; margin-bottom: 0.6rem; display: block; }
+  .card h3 { font-size: 0.98rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .card p { font-size: 0.87rem; color: var(--muted); line-height: 1.55; }
+
+  /* ---------- competency ---------- */
+  .comps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.7rem; }
+  @media (max-width: 720px) { .comps { grid-template-columns: 1fr 1fr; } }
+  .comp { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 0.9rem; text-align: center; }
+  .comp .n { font-family: var(--mono); font-size: 0.7rem; color: var(--dim); }
+  .comp .name { font-size: 0.9rem; font-weight: 700; margin: 0.4rem 0 0.2rem; }
+  .comp .name.cc-strategy { color: var(--plan); }
+  .comp .name.cc-rigor    { color: var(--ops); }
+  .comp .name.cc-scale    { color: var(--comms); }
+  .comp .name.cc-change   { color: #d9794a; }
+  .comp .name.cc-domain   { color: var(--review); }
+  .comp .desc { font-size: 0.72rem; color: var(--muted); line-height: 1.45; }
+
+  /* ---------- footer ---------- */
+  footer { border-top: 1px solid var(--border); margin-top: 4.5rem; padding: 2.5rem 0 4rem; }
+  .foot-tags { font-family: var(--mono); font-size: 0.72rem; color: var(--dim); line-height: 1.9; }
+  .foot-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; font-size: 0.8rem; color: var(--muted); }
+  .foot-bottom a { color: var(--muted); transition: color 0.15s; }
+  .foot-bottom a:hover { color: var(--accent-hi); }
+  .foot-bottom .links { display: flex; gap: 1.2rem; }
+
+  /* reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <span class="brand">ai-pgm<span class="dim"> · adrian hills</span></span>
+    <div class="nav-links">
+      <a href="#skills">Skills</a>
+      <a href="#chains">Chains</a>
+      <a href="#reliability">Reliability</a>
+      <a href="#competencies">Competencies</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span> Claude Code · Program Management toolkit</span>
+    <h1 class="title">20 Claude Code skills<br><span class="grad">that run programs for me.</span></h1>
+    <p class="lede">
+      A kit of <strong>20 Claude Code skills</strong> for Program Managers and TPMs — full
+      program-lifecycle automation. Status updates, risk scans, stakeholder comms, workback
+      schedules — all grounded in real program data from Slack, Smartsheet, Drive, Jira, Calendar, and Zoom.
+    </p>
+    <div class="callout-hero">
+      <span class="ic">⚡</span>
+      <p><strong>Reclaim 20+ hours a week</strong> of execution overhead. Spend it on the work only humans can do.</p>
+    </div>
+    <div class="hero-meta">
+      <span class="pill">Tailored · DACE</span>
+      <span class="pill">Program Binder</span>
+      <span class="pill">Leadership Reviews</span>
+      <span class="pill">Smart Brevity</span>
+      <span class="pill">Decision Records</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="stats reveal">
+    <div class="stat"><div class="num">20</div><div class="lab">Skills shipped</div></div>
+    <div class="stat"><div class="num">5</div><div class="lab">Lifecycle phases</div></div>
+    <div class="stat"><div class="num">20+ hrs</div><div class="lab">Reclaimed / week</div></div>
+    <div class="stat"><div class="num">6</div><div class="lab">Data sources</div></div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">The catalog</div>
+      <div class="sec-title">The 20 skills</div>
+      <p class="sec-sub">Every skill name is a command that does one thing well. Filter by lifecycle phase or by the career competency it builds.</p>
+    </div>
+
+    <div class="filterbar reveal">
+      <div class="filter-group">
+        <span class="filter-label">Phase</span>
+        <span class="chip phase-chip c-plan"   data-type="phase" data-val="Plan"><span class="swatch" style="background:var(--plan)"></span>Plan</span>
+        <span class="chip phase-chip c-ops"    data-type="phase" data-val="Ops"><span class="swatch" style="background:var(--ops)"></span>Ops</span>
+        <span class="chip phase-chip c-risk"   data-type="phase" data-val="Risk"><span class="swatch" style="background:var(--risk)"></span>Risk</span>
+        <span class="chip phase-chip c-comms"  data-type="phase" data-val="Comms"><span class="swatch" style="background:var(--comms)"></span>Comms</span>
+        <span class="chip phase-chip c-review" data-type="phase" data-val="Review"><span class="swatch" style="background:var(--review)"></span>Review</span>
+      </div>
+      <span class="chip reset" id="reset">Reset ✕</span>
+    </div>
+    <div class="filterbar reveal" style="margin-top:-0.4rem;">
+      <div class="filter-group">
+        <span class="filter-label">Competency</span>
+        <span class="chip" data-type="comp" data-val="Strategy">Strategy</span>
+        <span class="chip" data-type="comp" data-val="Rigor">Rigor</span>
+        <span class="chip" data-type="comp" data-val="Scale">Scale</span>
+        <span class="chip" data-type="comp" data-val="Change">Change</span>
+        <span class="chip" data-type="comp" data-val="Domain">Domain</span>
+      </div>
+      <span class="count" id="count"></span>
+    </div>
+
+    <div class="table reveal" id="table">
+      <div class="row head">
+        <div>Skill</div><div>What it does</div><div style="text-align:right">Time saved</div>
+      </div>
+      <!-- rows injected by JS -->
+    </div>
+  </section>
+
+  <!-- CHAINS -->
+  <section id="chains">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">Composition</div>
+      <div class="sec-title">How skills chain together</div>
+      <p class="sec-sub">The leverage isn't any single skill — it's the chains, where one skill's output is the next one's input.</p>
+    </div>
+    <div class="chains">
+      <div class="chain c-blue reveal">
+        <h3>🔄 Weekly operating rhythm</h3>
+        <div class="flow">tpm-rockstar → comms → status-update</div>
+        <p>The chief-of-staff brief surfaces what shifted and drafts replies; triage prioritizes the inbox sweep; status-update drafts the executive summary.</p>
+      </div>
+      <div class="chain c-red reveal">
+        <h3>🚨 Risk escalation path</h3>
+        <div class="flow">tpm-rockstar → raid → premortem → escalate → decision</div>
+        <p>Brief detects the signal, RAID captures it, premortem stress-tests failure modes, escalation flags leadership with options, decision documents the resolution with DACE roles.</p>
+      </div>
+      <div class="chain c-purple reveal">
+        <h3>🚀 New program launch</h3>
+        <div class="flow">kickoff → stakeholder-map → workback → kickoff → comms</div>
+        <p>Brief defines scope and DACE; stakeholder map identifies who's in the room; workback computes the schedule from the launch date; kickoff agenda runs the room; comms drafts the announcement.</p>
+      </div>
+      <div class="chain c-green reveal">
+        <h3>✅ Meeting to action</h3>
+        <div class="flow">zoom-meeting-summary → raid → comms</div>
+        <p>The transcript becomes a structured summary with action items and a mini RAID; the RAID log absorbs the new items with owners; comms posts to the right channel.</p>
+      </div>
+      <div class="chain c-gray reveal">
+        <h3>🏁 Program close</h3>
+        <div class="flow">retro → comms → roadmap-compare</div>
+        <p>Retro captures lessons; spotlight recognizes contributors; roadmap compare feeds the lessons into the next planning cycle.</p>
+      </div>
+      <div class="chain c-yellow reveal">
+        <h3>🗓️ Quarterly planning</h3>
+        <div class="flow">business-case → roadmap-compare → capacity-plan → kickoff → decision</div>
+        <p>Business case validates each bet; roadmap compare detects collisions; capacity plan surfaces SPOFs; kickoff briefs scope the approved bets; decision documents the portfolio call.</p>
+      </div>
+      <div class="chain c-orange reveal">
+        <h3>🔧 Incident to learning</h3>
+        <div class="flow">rca → retro → premortem → raid</div>
+        <p>RCA structures the timeline and corrective actions; retro captures broader reflections; premortem applies the learnings to prevent recurrence; RAID absorbs the corrective actions with target dates.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RELIABILITY -->
+  <section id="reliability">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">Trust</div>
+      <div class="sec-title">Built for reliability</div>
+      <p class="sec-sub">A kit you delegate real work to needs reliability primitives and an eval harness — not just good prompts.</p>
+    </div>
+    <div class="cards">
+      <div class="card reveal">
+        <span class="ic">🔍</span>
+        <h3>Reliability primitives</h3>
+        <p>Verify-coverage checks, freshness gates on stale data, and provenance back to Slack / Smartsheet / Drive / Jira / Calendar. Every claim traces to a source.</p>
+      </div>
+      <div class="card reveal">
+        <span class="ic">🧪</span>
+        <h3>Eval harness</h3>
+        <p>Every skill is A/B tested against the same request with no skill loaded. If it isn't materially better than the base model, it doesn't ship.</p>
+      </div>
+      <div class="card reveal">
+        <span class="ic">📈</span>
+        <h3>Career competency mapping</h3>
+        <p>Each skill maps to the TPM/PGM career competencies it builds, so delegated work also reinforces the competencies you're promoted on.</p>
+      </div>
+      <div class="card reveal">
+        <span class="ic">🧠</span>
+        <h3>Program memory</h3>
+        <p>A per-program Brief re-injected at run start, plus an append-only Decisions Ledger with mandatory evidence refs. Contradictions are surfaced, never silently resolved.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPETENCIES -->
+  <section id="competencies">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">Mapped to growth</div>
+      <div class="sec-title">TPM / PGM career competencies</div>
+      <p class="sec-sub">Delegated execution that compounds into the competencies you're evaluated on.</p>
+    </div>
+    <div class="comps">
+      <div class="comp reveal"><div class="n">01</div><div class="name cc-strategy">Strategy</div><div class="desc">Connect strategy to execution</div></div>
+      <div class="comp reveal"><div class="n">02</div><div class="name cc-rigor">Rigor</div><div class="desc">Execute with rigor</div></div>
+      <div class="comp reveal"><div class="n">03</div><div class="name cc-scale">Scale</div><div class="desc">Enable scale &amp; velocity</div></div>
+      <div class="comp reveal"><div class="n">04</div><div class="name cc-change">Change</div><div class="desc">Lead change</div></div>
+      <div class="comp reveal"><div class="n">05</div><div class="name cc-domain">Domain</div><div class="desc">Technical domain expertise</div></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-tags reveal">
+      Tailored · DACE · Program Binder · Leadership Reviews · Smart Brevity · Smartsheet · Decision Records
+    </div>
+    <div class="foot-bottom">
+      <span>Built by Adrian Hills — proof, not portfolio.</span>
+      <span class="links">
+        <a href="https://www.linkedin.com/in/hillsadrian/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://adrianhills.github.io/" target="_blank" rel="noopener">Writing</a>
+        <a href="https://github.com/adrianhills" target="_blank" rel="noopener">GitHub</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---- skill data (mirrors the Notion catalog) ----
+  const PHASE_COLOR = { Plan:'var(--plan)', Ops:'var(--ops)', Risk:'var(--risk)', Comms:'var(--comms)', Review:'var(--review)' };
+  const PHASE_ORDER = { Plan:0, Ops:1, Risk:2, Comms:3, Review:4 };
+
+  const SKILLS = [
+    { skill:'tpm-rockstar',         phase:'Ops',    comp:['Rigor'],              time:'4–5 hrs / week',        does:'Monday-morning standup — scans Slack, Jira, Smartsheet, RAID, and Drive for each program.' },
+    { skill:'status-update',        phase:'Ops',    comp:['Rigor','Change'],     time:'90 min / update',       does:'Program status updates at any altitude — ad-hoc, recurring LT doc section, or leadership review prep.' },
+    { skill:'kickoff',              phase:'Plan',   comp:['Strategy'],           time:'90 min / kickoff',      does:'Kickoff agendas and program-brief one-pagers with DACE alignment; auto-routes between the two.' },
+    { skill:'workback',            phase:'Plan',   comp:['Rigor'],              time:'90 min / program',      does:'Backward-pass scheduling with benchmarks and a Smartsheet write.' },
+    { skill:'capacity-plan',        phase:'Plan',   comp:['Strategy','Rigor'],   time:'90 min / analysis',     does:'Capacity vs. demand analysis — staffing, SPOF detection, cross-BU capacity gaps.' },
+    { skill:'business-case',        phase:'Plan',   comp:['Strategy'],           time:'2–3 hrs / case',        does:'Goal-aligned investment cases with hypothesis validation and ROI.' },
+    { skill:'roadmap-compare',      phase:'Plan',   comp:['Domain','Strategy'],  time:'2 hrs / review',        does:'Cross-program roadmap conflict detection and resource contention.' },
+    { skill:'prd-review',           phase:'Plan',   comp:['Domain'],             time:'60 min / review',       does:'PRD/BRD completeness validation against company standards.' },
+    { skill:'program-expert',       phase:'Plan',   comp:['Strategy','Scale'],   time:'30 min / question',     does:'Per-program knowledge-base oracle — instantiate for any flagship program.' },
+    { skill:'raid',                 phase:'Risk',   comp:['Rigor'],              time:'60 min / session',      does:'RAID logs with probability-impact scoring and owner/date inference.' },
+    { skill:'premortem',            phase:'Risk',   comp:['Domain','Rigor'],     time:'2 hrs / session',       does:'Gary Klein prospective hindsight — surface failure modes before launch.' },
+    { skill:'dependency-scan',      phase:'Risk',   comp:['Rigor','Domain'],     time:'90 min / scan',         does:'Map dependencies across PRDs, schedules, and Jira with L1/L2 ownership.' },
+    { skill:'escalate',             phase:'Risk',   comp:['Change'],             time:'30 min / escalation',   does:'Structured escalations with options, not just problems.' },
+    { skill:'launch-readiness',     phase:'Risk',   comp:['Rigor'],              time:'2–3 hrs / gate',        does:'Cross-functional go/no-go gate — scored readiness across departments with an executive approval draft.' },
+    { skill:'comms',                phase:'Comms',  comp:['Change','Scale'],     time:'30–45 min / session',   does:'Unified stakeholder comms — drafts messages, triages Slack, writes recognition / change-mgmt posts.' },
+    { skill:'decision',             phase:'Comms',  comp:['Change','Strategy'],  time:'90 min / decision',     does:'Decision Template with DACE roles and dual Slack posts.' },
+    { skill:'zoom-meeting-summary', phase:'Review', comp:['Domain','Rigor'],     time:'20–30 min / meeting',   does:'Summarize Zoom transcripts with action items and mini RAID logs.' },
+    { skill:'retro',                phase:'Review', comp:['Domain','Scale'],     time:'60 min / retro',        does:'4-area retrospective facilitation (Ray Sheen framework).' },
+    { skill:'rca',                  phase:'Review', comp:['Domain'],             time:'90 min / RCA',          does:'Structured RCA process with a 5-Why walkthrough and paste-ready output.' },
+    { skill:'stakeholder-map',      phase:'Review', comp:['Strategy','Change'],  time:'2 hrs / program',       does:'Power/interest grid + DACE mapping + engagement strategy.' },
+  ].sort((a,b) => PHASE_ORDER[a.phase] - PHASE_ORDER[b.phase]);
+
+  const table = document.getElementById('table');
+  const filters = { phase: new Set(), comp: new Set() };
+
+  function render() {
+    document.querySelectorAll('.row.skill-row').forEach(r => r.remove());
+    let shown = 0;
+    SKILLS.forEach(s => {
+      const passPhase = filters.phase.size === 0 || filters.phase.has(s.phase);
+      const passComp  = filters.comp.size === 0 || s.comp.some(c => filters.comp.has(c));
+      if (!passPhase || !passComp) return;
+      shown++;
+      const row = document.createElement('div');
+      row.className = 'row skill-row';
+      row.innerHTML =
+        '<div class="skill-name"><span class="bar" style="background:'+PHASE_COLOR[s.phase]+'"></span>'+s.skill+'</div>'+
+        '<div><div class="skill-does">'+s.does+'</div><div class="skill-tags">'+
+          '<span class="tag" style="color:'+PHASE_COLOR[s.phase]+';border-color:'+PHASE_COLOR[s.phase]+'55">'+s.phase+'</span>'+
+          s.comp.map(c => '<span class="tag">'+c+'</span>').join('')+
+        '</div></div>'+
+        '<div class="skill-time">'+s.time+'</div>';
+      table.appendChild(row);
+    });
+    document.getElementById('count').textContent = shown + ' of ' + SKILLS.length + ' skills';
+  }
+
+  document.querySelectorAll('.chip[data-type]').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const t = chip.dataset.type, v = chip.dataset.val;
+      if (filters[t].has(v)) { filters[t].delete(v); chip.classList.remove('active'); }
+      else { filters[t].add(v); chip.classList.add('active'); }
+      render();
+    });
+  });
+  document.getElementById('reset').addEventListener('click', () => {
+    filters.phase.clear(); filters.comp.clear();
+    document.querySelectorAll('.chip.active').forEach(c => c.classList.remove('active'));
+    render();
+  });
+
+  render();
+
+  // ---- reveal on scroll ----
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
