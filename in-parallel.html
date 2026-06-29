@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>In Parallel — I work, my agents work, at the same time</title>
+<style>
+  :root{
+    --bg:#f4f4f7; --panel:#ffffff; --panel-2:#fbfbfd;
+    --ink:#16161a; --muted:#5f5f68; --faint:#8a8a93;
+    --line:#e5e5ea; --line-2:#eeeef2;
+    --accent:#0a84ff; --accent-ink:#0a63cc;
+    --good:#12985a; --warn:#b97c0a; --bad:#dd362c;
+    --api:#7c5cff; --api-ink:#5b34e0;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(18,18,40,.05),0 10px 30px -12px rgba(18,18,50,.12);
+    --shadow-lg:0 2px 6px rgba(18,18,40,.07),0 22px 50px -16px rgba(18,18,55,.22);
+    --ease:cubic-bezier(.22,.7,.2,1);
+    --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){:root{
+    --bg:#08080b; --panel:#161619; --panel-2:#1b1b20; --ink:#f2f2f6; --muted:#9a9aa4; --faint:#6c6c76;
+    --line:#27272e; --line-2:#202026; --accent:#409cff; --accent-ink:#8cc4ff;
+    --good:#2fc476; --warn:#e0a93c; --bad:#ff5b50; --api:#a78bfa; --api-ink:#c9b8ff;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 14px 34px -14px rgba(0,0,0,.7);
+    --shadow-lg:0 2px 8px rgba(0,0,0,.55),0 26px 64px -18px rgba(0,0,0,.85);
+  }}
+  :root[data-theme="light"]{
+    --bg:#f4f4f7; --panel:#ffffff; --panel-2:#fbfbfd; --ink:#16161a; --muted:#5f5f68; --faint:#8a8a93;
+    --line:#e5e5ea; --line-2:#eeeef2; --accent:#0a84ff; --accent-ink:#0a63cc;
+    --good:#12985a; --warn:#b97c0a; --bad:#dd362c; --api:#7c5cff; --api-ink:#5b34e0;
+    --shadow:0 1px 2px rgba(18,18,40,.05),0 10px 30px -12px rgba(18,18,50,.12);
+    --shadow-lg:0 2px 6px rgba(18,18,40,.07),0 22px 50px -16px rgba(18,18,55,.22);
+  }
+  :root[data-theme="dark"]{
+    --bg:#08080b; --panel:#161619; --panel-2:#1b1b20; --ink:#f2f2f6; --muted:#9a9aa4; --faint:#6c6c76;
+    --line:#27272e; --line-2:#202026; --accent:#409cff; --accent-ink:#8cc4ff;
+    --good:#2fc476; --warn:#e0a93c; --bad:#ff5b50; --api:#a78bfa; --api-ink:#c9b8ff;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 14px 34px -14px rgba(0,0,0,.7);
+    --shadow-lg:0 2px 8px rgba(0,0,0,.55),0 26px 64px -18px rgba(0,0,0,.85);
+  }
+  :root{
+    --accent-soft:color-mix(in srgb, var(--accent) 13%, var(--panel));
+    --api-soft:color-mix(in srgb, var(--api) 15%, var(--panel));
+    --good-soft:color-mix(in srgb, var(--good) 16%, var(--panel));
+    --warn-soft:color-mix(in srgb, var(--warn) 18%, var(--panel));
+    --bad-soft:color-mix(in srgb, var(--bad) 15%, var(--panel));
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+    -webkit-font-smoothing:antialiased;line-height:1.5;
+    transition:background .3s var(--ease),color .3s var(--ease)}
+  body::before{content:"";position:fixed;inset:0 0 auto 0;height:360px;z-index:-1;pointer-events:none;
+    background:radial-gradient(900px 340px at 80% -60px, color-mix(in srgb, var(--api) 18%, transparent), transparent 70%)}
+  .wrap{max-width:1120px;margin:0 auto;padding:34px 24px 72px}
+
+  header.top{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .title h1{font-size:27px;font-weight:600;letter-spacing:-.02em;margin:0 0 5px}
+  .title p{margin:0;color:var(--muted);font-size:14px;max-width:600px}
+  .toolbar{display:flex;align-items:center;gap:10px}
+  .badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--api-ink);background:var(--api-soft);
+    border:1px solid color-mix(in srgb,var(--api) 30%,transparent);padding:6px 11px;border-radius:999px;white-space:nowrap}
+  .theme-btn,.replay-btn{display:inline-flex;align-items:center;gap:7px;font:inherit;font-size:13px;font-weight:540;
+    color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:8px 13px;cursor:pointer;transition:all .2s var(--ease)}
+  .theme-btn:hover,.replay-btn:hover{color:var(--ink);border-color:var(--accent);transform:translateY(-1px)}
+  .ic{width:1em;height:1em;display:inline-block;vertical-align:-.14em;fill:none;stroke:currentColor;
+    stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+
+  .gate{display:flex;align-items:center;gap:13px;margin:24px 0 26px;padding:15px 18px;border-radius:14px;
+    background:linear-gradient(100deg,color-mix(in srgb,var(--accent) 10%,var(--panel)),var(--panel));
+    border:1px solid color-mix(in srgb,var(--accent) 24%,var(--line))}
+  .gate .lock{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;flex:none;
+    color:var(--accent);background:var(--accent-soft)}
+  .gate .lock .ic{width:18px;height:18px}
+  .gate b{font-size:14px;font-weight:620;color:var(--ink)}
+  .gate span{font-size:13px;color:var(--muted)}
+
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px 20px 16px;box-shadow:var(--shadow)}
+  .panel h3{margin:0 0 3px;font-size:15px;font-weight:620;letter-spacing:-.01em}
+  .panel .sub{margin:0 0 8px;font-size:12.5px;color:var(--muted)}
+  .panel .sub b{color:var(--ink);font-weight:600}
+  svg.band{width:100%;height:auto;display:block;overflow:visible}
+  .axis-t{font-size:11px;fill:var(--faint);font-family:var(--font)}
+  .lane-t{font-size:12px;fill:var(--muted);font-weight:560;font-family:var(--font)}
+  .job-t{font-size:11.5px;fill:#eceefb;font-weight:560;font-family:var(--font)}
+  .job-s{font-size:10.5px;fill:#9aa0c4;font-family:var(--font)}
+  .hum-t{font-size:11px;fill:#e6eafa;font-weight:560;font-family:var(--font)}
+  .par-t{font-size:9.5px;fill:#cdb8ff;font-weight:600;font-family:var(--font);letter-spacing:.03em}
+
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:12px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend .ic{width:14px;height:14px;color:var(--api)}
+
+  .brief{margin-top:20px;border-radius:18px;padding:20px 22px;
+    background:linear-gradient(160deg, color-mix(in srgb,var(--accent) 11%,var(--panel)), color-mix(in srgb,var(--accent) 4%,var(--panel)));
+    border:1px solid color-mix(in srgb,var(--accent) 26%,var(--line));box-shadow:var(--shadow)}
+  .brief-head{display:flex;align-items:center;gap:11px;margin-bottom:4px}
+  .brief-head .clock{display:grid;place-items:center;width:32px;height:32px;border-radius:9px;color:var(--accent);background:var(--accent-soft);flex:none}
+  .brief-head .clock .ic{width:18px;height:18px}
+  .brief-head h3{margin:0;font-size:16px;font-weight:640;letter-spacing:-.01em}
+  .brief-head .stamp{margin-left:auto;font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .row{display:grid;grid-template-columns:96px 1fr auto;gap:14px;align-items:start;
+    padding:14px 2px;border-top:1px solid color-mix(in srgb,var(--accent) 14%,var(--line))}
+  .row:first-of-type{border-top:1px solid color-mix(in srgb,var(--accent) 20%,var(--line));margin-top:10px}
+  .type{font-size:11px;font-weight:680;letter-spacing:.04em;text-transform:uppercase;padding:5px 0;text-align:center;border-radius:8px}
+  .type.decide{color:var(--bad);background:var(--bad-soft)}
+  .type.approve{color:var(--accent-ink);background:var(--accent-soft)}
+  .type.review{color:var(--warn);background:var(--warn-soft)}
+  .why b{font-size:13.5px;font-weight:620;color:var(--ink)}
+  .why p{margin:3px 0 0;font-size:12.5px;color:var(--muted);line-height:1.5}
+  .why .src{font-size:11.5px;color:var(--api-ink);font-weight:540}
+  .meta{display:flex;flex-direction:column;align-items:flex-end;gap:7px;white-space:nowrap}
+  .state{font-size:11px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;gap:5px}
+  .state .ic{width:13px;height:13px;color:var(--accent)}
+  .pill{font-size:11px;font-weight:640;padding:3px 10px;border-radius:999px}
+  .pill.good{background:var(--good-soft);color:var(--good)}
+  .pill.warn{background:var(--warn-soft);color:var(--warn)}
+  .raise{font-size:11px;color:var(--faint);max-width:220px;text-align:right;line-height:1.4}
+
+  .silence{margin:16px 2px 0;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:8px}
+  .silence .ic{width:15px;height:15px;color:var(--good)}
+  footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+  footer b{color:var(--ink)}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--good);display:inline-block;
+    box-shadow:0 0 0 0 color-mix(in srgb,var(--good) 60%,transparent);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--good) 55%,transparent)}70%{box-shadow:0 0 0 6px transparent}100%{box-shadow:0 0 0 0 transparent}}
+  @media (prefers-reduced-motion: no-preference){
+    .anim-bar{animation:barIn .7s var(--ease) both}
+    .brief,.gate{animation:cardIn .6s var(--ease) both}
+  }
+  @keyframes barIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @media(max-width:680px){.row{grid-template-columns:80px 1fr}.meta{grid-column:2;align-items:flex-start}.raise{text-align:left}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.6 6.6 0 0 0 21 12.8Z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3 4 14h7l-1 7 9-11h-7l1-7Z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></symbol>
+  <symbol id="i-replay" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <linearGradient id="sky" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#9fb0d6"/><stop offset="0.36" stop-color="#8294be"/>
+    <stop offset="0.48" stop-color="#3a4060"/><stop offset="0.5" stop-color="#2a3150"/>
+    <stop offset="0.62" stop-color="#0d1424"/><stop offset="0.9" stop-color="#1a2440"/>
+    <stop offset="0.955" stop-color="#c08552"/><stop offset="1" stop-color="#9fb0d6"/>
+  </linearGradient>
+</defs></svg>
+
+<div class="wrap">
+  <header class="top">
+    <div class="title">
+      <h1>In Parallel</h1>
+      <p>I don't wait for dedicated time at my desk. While I'm in meetings or heads-down, my agents are already working — firing on events all day, and on a schedule overnight.</p>
+    </div>
+    <div class="toolbar">
+      <span class="badge"><span class="dot"></span>Illustrative</span>
+      <button class="replay-btn" id="replayBtn"><svg class="ic"><use href="#i-replay"/></svg>Replay the day</button>
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle theme"></button>
+    </div>
+  </header>
+
+  <div class="gate">
+    <span class="lock"><svg class="ic"><use href="#i-lock"/></svg></span>
+    <div>
+      <b>Agents draft and flag — on events as they happen, and on a schedule. I own every decision, all Sev-1/2, and external comms.</b>
+      <span> &nbsp;Nothing ships without me.</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>One full cycle · 8am → 8am</h3>
+    <p class="sub">Two lanes, both working. <b>At 1pm I'm in the exec sync — my agent is already drafting the recap.</b> The work runs next to me, not after me.</p>
+    <div><svg class="band" id="band" viewBox="0 0 1100 360" role="img" aria-label="A 24-hour timeline with two active lanes: my working day and the agent fleet running in parallel on events and on a schedule, ending in a decision brief."></svg></div>
+    <div class="legend">
+      <span><svg class="ic"><use href="#i-bolt"/></svg>Event-triggered — fires the moment something happens</span>
+      <span><svg class="ic"><use href="#i-clock"/></svg>Scheduled (cron / Custom Agent)</span>
+      <span><svg class="ic" style="color:var(--accent)"><use href="#i-lock"/></svg>Supervised — drafts, held for my approval</span>
+    </div>
+  </div>
+
+  <div class="brief" id="brief"></div>
+
+  <p class="silence"><svg class="ic"><use href="#i-check"/></svg><span><b style="color:var(--ink);font-weight:600">Quiet is the default.</b> Agents act only when something crosses a threshold — so most of what they do, I never have to see. What reaches me is the short list above.</span></p>
+
+  <footer>
+    <p><b>What this is.</b> An illustrative visualization of how I actually run: event-triggered agents during the day (a meeting ends, a Slack thread escalates, a PRD changes) plus a scheduled overnight sweep — my real <b>watchdog</b> skill, in <b>Supervised Execute</b> mode (drafts need my approval), logging every run to <code>log.ndjson</code>. The structure is real — the triggers, the parallelism, the human gate — the numbers are not.</p>
+    <p style="margin-top:10px"><a href="./" style="color:var(--accent-ink);text-decoration:none">← ai-pgm</a> &nbsp;·&nbsp; 20 Claude Code skills for program management &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/hillsadrian/" style="color:var(--accent-ink);text-decoration:none">Adrian Hills</a></p>
+  </footer>
+</div>
+
+<script>
+var W=1100, H=360, padL=64, padR=26, topY=50;
+var T0=8, T1=32;
+function x(t){ return padL + (t-T0)/(T1-T0)*(W-padL-padR); }
+var yYou=topY+58, yAgent=topY+168;
+var bandBot=H-30;
+function fmtH(h){ var hh=((h%24)+24)%24; var ap=hh<12?'a':'p'; var d=hh%12; if(d===0){d=12;} return d+ap; }
+function fmtT(h){ var mm=Math.round((h%1)*60); if(mm===0){return fmtH(Math.floor(h));} var hh=((Math.floor(h)%24)+24)%24; var ap=hh<12?'a':'p'; var d=hh%12; if(d===0){d=12;} return d+':'+(mm<10?'0'+mm:mm)+ap; }
+
+var human=[
+  {t:9.0,  t2:10.0, label:'standup'},
+  {t:13.0, t2:14.0, label:'exec sync'},
+  {t:16.5, t2:17.5, label:'design review'}
+];
+var sleep={from:23.0, to:30.5};
+
+var agents=[
+  {t:9.4,  label:'process-notes',    sub:'standup recap + actions',    trig:'event', pair:0},
+  {t:13.8, label:'comms draft',      sub:'exec recap, 4 audiences',    trig:'event', pair:2},
+  {t:16.9, label:'dependency-scan',  sub:'PRD edit to critical path',  trig:'event', pair:3, running:true},
+  {t:19.0, label:'watchdog scan',    sub:'4 programs swept',           trig:'cron'},
+  {t:24.0, label:'RAID binder sync', sub:'Jira + Smartsheet · 6 items',trig:'cron'},
+  {t:27.0, label:'status-update x4',  sub:'eng · LT · exec · all-hands',trig:'gate'},
+  {t:29.5, label:'inbox triage',     sub:'on Slack event · 11 threads',trig:'event'}
+];
+
+function render(animate){
+  var p=[], i;
+  p.push('<rect x="'+padL+'" y="'+topY+'" width="'+(W-padL-padR)+'" height="'+(bandBot-topY)+'" rx="14" fill="#0e1322"/>');
+  p.push('<rect x="'+padL+'" y="'+topY+'" width="'+(W-padL-padR)+'" height="10" rx="5" fill="url(#sky)" opacity="0.9"/>');
+  p.push('<use href="#i-sun" x="'+(x(12)-6)+'" y="'+(topY+14)+'" width="13" height="13" style="color:#ffd9a0;stroke:#ffd9a0;fill:none;stroke-width:1.7"/>');
+  p.push('<use href="#i-moon" x="'+(x(24)-6)+'" y="'+(topY+14)+'" width="12" height="12" style="color:#b9c2e6;stroke:#b9c2e6;fill:none;stroke-width:1.7"/>');
+
+  var ax=[8,12,16,20,24,28,32];
+  for(i=0;i<ax.length;i++){
+    var gx=x(ax[i]);
+    p.push('<line x1="'+gx+'" y1="'+(topY+12)+'" x2="'+gx+'" y2="'+bandBot+'" stroke="rgba(255,255,255,.09)" stroke-width="1"/>');
+    p.push('<text class="axis-t" x="'+gx+'" y="'+(topY-9)+'" text-anchor="middle">'+fmtH(ax[i])+'</text>');
+  }
+  p.push('<text class="lane-t" x="'+(padL-12)+'" y="'+(yYou+4)+'" text-anchor="end">You</text>');
+  p.push('<text class="lane-t" x="'+(padL-12)+'" y="'+(yAgent+4)+'" text-anchor="end">Agent fleet</text>');
+
+  var sg=animate?'anim-bar':'';
+
+  // parallel connectors (drawn first, behind)
+  for(i=0;i<agents.length;i++){
+    var a=agents[i];
+    if(a.pair===undefined){ continue; }
+    var cx=x(a.t);
+    p.push('<line x1="'+cx+'" y1="'+(yYou+14)+'" x2="'+cx+'" y2="'+(yAgent-13)+'" stroke="#8a7bd6" stroke-width="1.2" stroke-dasharray="2 4" opacity=".5"/>');
+    if(i===1){ p.push('<text class="par-t" x="'+(cx+6)+'" y="'+((yYou+yAgent)/2+3)+'">same moment</text>'); }
+  }
+
+  // human lane: work blocks + sleep
+  for(i=0;i<human.length;i++){
+    var hm=human[i], hx=x(hm.t), hw=x(hm.t2)-x(hm.t);
+    p.push('<g class="'+sg+'"><rect x="'+hx+'" y="'+(yYou-12)+'" width="'+hw+'" height="24" rx="8" fill="#3c466a" stroke="#566394" stroke-width="1"/>');
+    p.push('<use href="#i-user" x="'+(hx+8)+'" y="'+(yYou-5)+'" width="11" height="11" style="color:#cdd5f2;stroke:#cdd5f2;fill:none;stroke-width:1.7"/>');
+    p.push('<text class="hum-t" x="'+(hx+24)+'" y="'+(yYou+3.5)+'">'+hm.label+'</text></g>');
+  }
+  var sx=x(sleep.from), sw=x(sleep.to)-x(sleep.from);
+  p.push('<g class="'+sg+'"><rect x="'+sx+'" y="'+(yYou-12)+'" width="'+sw+'" height="24" rx="12" fill="rgba(120,130,170,.14)" stroke="rgba(150,160,200,.26)"/>');
+  p.push('<use href="#i-moon" x="'+(sx+11)+'" y="'+(yYou-6)+'" width="12" height="12" style="color:#9aa3c4;stroke:#9aa3c4;fill:none;stroke-width:1.7"/>');
+  p.push('<text class="job-s" x="'+(sx+sw/2+8)+'" y="'+(yYou+3.5)+'" text-anchor="middle">asleep · 11:00pm to 6:30am</text></g>');
+
+  var wx=x(sleep.to);
+  p.push('<line x1="'+wx+'" y1="'+(yYou-14)+'" x2="'+wx+'" y2="'+(yYou+14)+'" stroke="#ffd2a0" stroke-width="1.4" stroke-dasharray="2 3" opacity=".85"/>');
+  p.push('<use href="#i-sun" x="'+(wx-5)+'" y="'+(yYou-33)+'" width="11" height="11" style="color:#ffd2a0;stroke:#ffd2a0;fill:none;stroke-width:1.7"/>');
+  p.push('<text x="'+wx+'" y="'+(yYou-20)+'" text-anchor="middle" style="font-size:9.5px;fill:#ffd2a0;font-weight:600;font-family:var(--font)">I wake 6:30a</text>');
+
+  // agent lane
+  var cap=66;
+  for(i=0;i<agents.length;i++){
+    var j=agents[i], jx=x(j.t);
+    var col = j.trig==='gate' ? 'var(--accent)' : 'var(--api)';
+    var glyph = j.trig==='gate' ? '#i-lock' : (j.trig==='event' ? '#i-bolt' : '#i-clock');
+    var delay = animate ? ' style="animation-delay:'+(i*85)+'ms"' : '';
+    var lblY = yAgent+30 + (i%2)*36;
+    p.push('<g class="'+sg+'"'+delay+'>');
+    if(i%2===1){ p.push('<line x1="'+(jx+7)+'" y1="'+(yAgent+12)+'" x2="'+(jx+7)+'" y2="'+(lblY-11)+'" stroke="var(--api)" stroke-width="1" opacity=".35"/>'); }
+    p.push('<rect x="'+jx+'" y="'+(yAgent-12)+'" width="'+cap+'" height="24" rx="8" fill="'+col+'" opacity="0.93"/>');
+    p.push('<use href="'+glyph+'" x="'+(jx+7)+'" y="'+(yAgent-5)+'" width="11" height="11" style="color:#fff;stroke:#fff;fill:none;stroke-width:1.8"/>');
+    p.push('<text x="'+(jx+22)+'" y="'+(yAgent+3.5)+'" style="font-size:10px;fill:#fff;font-weight:600">'+fmtT(j.t)+'</text>');
+    if(j.running){ p.push('<circle cx="'+(jx+cap-9)+'" cy="'+yAgent+'" r="3.2" fill="#fff"><animate attributeName="opacity" values="1;.25;1" dur="1.6s" repeatCount="indefinite"/></circle>'); }
+    p.push('<text class="job-t" x="'+jx+'" y="'+lblY+'">'+j.label+'</text>');
+    p.push('<text class="job-s" x="'+jx+'" y="'+(lblY+15)+'">'+j.sub+'</text>');
+    p.push('</g>');
+  }
+  document.getElementById('band').innerHTML=p.join('');
+}
+
+var brief=[
+  {type:'decide', t:'Decide', title:'Vendor slip on Program B',
+   src:'dependency-scan · 4:55pm', why:' — your PRD edit moved the critical-path finish 4 business days; 2 downstream tasks now at risk.',
+   state:'Options drafted', conf:'High', confCls:'good', raise:'Confirm the vendor revised date in writing to lock it.'},
+  {type:'approve', t:'Approve', title:'Exec recap + status, 4 audiences',
+   src:'comms · 1:50pm + status-update · 2:30am', why:' — drafted from the exec sync and this week signals, calibrated per audience.',
+   state:'Drafted — awaiting your approval', conf:'High', confCls:'good', raise:'Skim the exec version; the rest mirror it.'},
+  {type:'review', t:'Review', title:'Silence pattern on Program D',
+   src:'watchdog · 7:00pm', why:' — core team channel quiet 72h on business days.',
+   state:'Flagged, not posted', conf:'Med', confCls:'warn', raise:'Heads-down sprint, or disengagement? One DM tells you.'}
+];
+function renderBrief(){
+  var h=['<div class="brief-head"><span class="clock"><svg class="ic"><use href="#i-bolt"/></svg></span><h3>What is waiting for you</h3><span class="stamp">handled across the day + overnight · you decide</span></div>'];
+  for(var i=0;i<brief.length;i++){
+    var b=brief[i];
+    h.push('<div class="row">');
+    h.push('<div class="type '+b.type+'">'+b.t+'</div>');
+    h.push('<div class="why"><b>'+b.title+'</b><p><span class="src">'+b.src+'</span>'+b.why+'</p></div>');
+    h.push('<div class="meta"><span class="state"><svg class="ic"><use href="#i-check"/></svg>'+b.state+'</span>');
+    h.push('<span class="pill '+b.confCls+'">'+b.conf+' confidence</span>');
+    h.push('<span class="raise">'+b.raise+'</span></div>');
+    h.push('</div>');
+  }
+  document.getElementById('brief').innerHTML=h.join('');
+}
+
+var root=document.documentElement, themeBtn=document.getElementById('themeBtn');
+var saved=localStorage.getItem('ao-theme'); if(saved){ root.setAttribute('data-theme',saved); }
+function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
+function paint(){ themeBtn.innerHTML='<svg class="ic"><use href="#i-'+(isDark()?'sun':'moon')+'"/></svg><span>'+(isDark()?'Light':'Dark')+'</span>'; }
+themeBtn.onclick=function(){ var d=!isDark(); root.setAttribute('data-theme', d?'dark':'light'); localStorage.setItem('ao-theme', d?'dark':'light'); paint(); };
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.getElementById('replayBtn').onclick=function(){ render(true); };
+paint(); render(!reduce); renderBrief();
+</script>
+</body>
+</html>
