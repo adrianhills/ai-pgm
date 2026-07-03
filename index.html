@@ -256,7 +256,7 @@
         <p>Anything that posts or decides stops at me. The agent drafts and queues; I approve. Sev-1/2 and external comms are always mine.</p>
       </div>
     </div>
-    <p class="ground"><b>Quiet is the default.</b> Agents act only when something crosses a threshold — so most of what they do, I never have to see. Grounded in my real <b>watchdog</b> skill: a scheduled scan in <b>Supervised Execute</b> mode, logging every run to <code>log.ndjson</code>. Illustrative numbers; the structure — triggers, parallelism, the human gate — is real.</p>
+    <p class="ground"><b>Quiet is the default.</b> Agents act only when something crosses a threshold — so most of what they do, I never have to see. Grounded in my real <b>watchdog</b> skill — the scheduled runner behind <b>tpm-rockstar</b> in the catalog below — a scan in <b>Supervised Execute</b> mode, logging every run to <code>log.ndjson</code>. Illustrative numbers; the structure — triggers, parallelism, the human gate — is real.</p>
   </section>
 </div>
 
@@ -299,7 +299,7 @@
     <div class="grid2">
       <div class="chain"><h4><span class="d" style="background:var(--plan)"></span>Weekly operating rhythm</h4><div class="flow">tpm-rockstar → comms → status-update</div><p>The brief surfaces what shifted and drafts replies; triage prioritizes the inbox sweep; status-update drafts the executive summary.</p></div>
       <div class="chain"><h4><span class="d" style="background:var(--risk)"></span>Risk escalation path</h4><div class="flow">tpm-rockstar → raid → premortem → escalate → decision</div><p>The brief detects the signal, RAID captures it, premortem stress-tests failure modes, escalation flags leadership with options, decision documents the call.</p></div>
-      <div class="chain"><h4><span class="d" style="background:var(--review)"></span>New program launch</h4><div class="flow">kickoff → stakeholder-map → workback → kickoff → comms</div><p>Brief defines scope and DACE; the map identifies who's in the room; workback computes the schedule from the launch date; comms drafts the announcement.</p></div>
+      <div class="chain"><h4><span class="d" style="background:var(--review)"></span>New program launch</h4><div class="flow">kickoff → stakeholder-map → workback → comms</div><p>Brief defines scope and DACE; the map identifies who's in the room; workback computes the schedule from the launch date; comms drafts the announcement.</p></div>
       <div class="chain"><h4><span class="d" style="background:var(--ops)"></span>Meeting to action</h4><div class="flow">zoom-meeting-summary → raid → comms</div><p>The transcript becomes a structured summary with action items; the RAID log absorbs the new items with owners; comms posts to the right channel.</p></div>
       <div class="chain"><h4><span class="d" style="background:var(--comms)"></span>Quarterly planning</h4><div class="flow">business-case → roadmap-compare → capacity-plan → kickoff → decision</div><p>Business case validates each bet; roadmap compare detects collisions; capacity plan surfaces SPOFs; decision documents the portfolio call.</p></div>
       <div class="chain"><h4><span class="d" style="background:#d9794a"></span>Incident to learning</h4><div class="flow">rca → retro → premortem → raid</div><p>RCA structures the timeline and corrective actions; retro captures reflections; premortem prevents recurrence; RAID absorbs the actions with target dates.</p></div>
@@ -343,7 +343,7 @@ function fmtT(h){ var mm=Math.round((h%1)*60); if(mm===0){return fmtH(Math.floor
 var human=[{t:9.0,t2:10.0,label:'standup'},{t:13.0,t2:14.0,label:'exec sync'},{t:16.5,t2:17.5,label:'design review'}];
 var sleep={from:23.0,to:30.5};
 var agents=[
-  {t:9.4,label:'process-notes',sub:'standup recap + actions',trig:'event'},
+  {t:9.4,label:'zoom-meeting-summary',sub:'standup recap + actions',trig:'event'},
   {t:13.8,label:'comms draft',sub:'exec recap, 4 audiences',trig:'event',pair:true},
   {t:16.9,label:'dependency-scan',sub:'PRD edit to critical path',trig:'event',running:true},
   {t:19.0,label:'watchdog scan',sub:'4 programs swept',trig:'cron'},
