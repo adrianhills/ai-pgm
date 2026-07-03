@@ -236,7 +236,7 @@
     </div>
 
     <h3 class="subhead">What's waiting for me</h3>
-    <p class="subnote">Across the day and overnight, the fleet drafts and flags. What reaches me is a short list — each traced to the job that surfaced it.</p>
+    <p class="subnote">Across the day and overnight, the fleet drafts and flags. What reaches me is a short list — each item traced to the job that surfaced it.</p>
     <div class="brief-list" id="briefList"></div>
 
     <div class="grid3">
@@ -248,7 +248,7 @@
       <div class="hcard">
         <span class="hic" style="color:var(--api);background:var(--api-soft)"><svg class="ic"><use href="#i-clock"/></svg></span>
         <h4>Scheduled</h4>
-        <p>An overnight sweep on a cron — the watchdog scans every program and only speaks up when something crosses a threshold.</p>
+        <p>An overnight sweep on a cron — the watchdog scans every program and surfaces only what needs a human.</p>
       </div>
       <div class="hcard">
         <span class="hic" style="color:var(--accent);background:var(--accent-soft)"><svg class="ic"><use href="#i-lock"/></svg></span>
@@ -256,7 +256,7 @@
         <p>Anything that posts or decides stops at me. The agent drafts and queues; I approve. Sev-1/2 and external comms are always mine.</p>
       </div>
     </div>
-    <p class="ground"><b>Quiet is the default.</b> Agents act only when something crosses a threshold — so most of what they do, I never have to see. Grounded in my real <b>watchdog</b> skill — the scheduled runner behind <b>tpm-rockstar</b> in the catalog below — a scan in <b>Supervised Execute</b> mode, logging every run to <code>log.ndjson</code>. Illustrative numbers; the structure — triggers, parallelism, the human gate — is real.</p>
+    <p class="ground"><b>Quiet is the default.</b> Agents act only when something crosses a threshold — so most of what they do, I never have to see. The demo is grounded in my real <b>watchdog</b> skill — the scheduled runner behind <b>tpm-rockstar</b> in the catalog below — which scans in <b>Supervised Execute</b> mode and logs every run to <code>log.ndjson</code>. Illustrative numbers; the structure — triggers, parallelism, the human gate — is real.</p>
   </section>
 </div>
 
@@ -265,7 +265,7 @@
     <div class="sec-head narrow">
       <span class="eyebrow">The library</span>
       <h2>The 20 skills behind it</h2>
-      <p class="sec-sub">Every skill is a command that does one thing well — invoked by hand, or given a trigger and run on its own. Filter by lifecycle phase or by the competency it builds.</p>
+      <p class="sec-sub">Every skill is a command that does one thing well — invoked by hand, or given a trigger and run on its own. The time on each row is what a typical run gives back, from my own tracking. Filter by lifecycle phase or by the competency it builds.</p>
     </div>
     <div class="filters">
       <span class="flabel">Phase</span>
@@ -297,12 +297,12 @@
       <p class="sec-sub">The leverage isn't any single skill — it's the chains, where one skill's output is the next one's input.</p>
     </div>
     <div class="grid2">
-      <div class="chain"><h4><span class="d" style="background:var(--plan)"></span>Weekly operating rhythm</h4><div class="flow">tpm-rockstar → comms → status-update</div><p>The brief surfaces what shifted and drafts replies; triage prioritizes the inbox sweep; status-update drafts the executive summary.</p></div>
+      <div class="chain"><h4><span class="d" style="background:var(--plan)"></span>Weekly operating rhythm</h4><div class="flow">tpm-rockstar → comms → status-update</div><p>The brief surfaces what shifted; comms triages the inbox and drafts replies; status-update drafts the executive summary.</p></div>
       <div class="chain"><h4><span class="d" style="background:var(--risk)"></span>Risk escalation path</h4><div class="flow">tpm-rockstar → raid → premortem → escalate → decision</div><p>The brief detects the signal, RAID captures it, premortem stress-tests failure modes, escalation flags leadership with options, decision documents the call.</p></div>
-      <div class="chain"><h4><span class="d" style="background:var(--review)"></span>New program launch</h4><div class="flow">kickoff → stakeholder-map → workback → comms</div><p>Brief defines scope and DACE; the map identifies who's in the room; workback computes the schedule from the launch date; comms drafts the announcement.</p></div>
+      <div class="chain"><h4><span class="d" style="background:var(--review)"></span>New program launch</h4><div class="flow">kickoff → stakeholder-map → workback → comms</div><p>Kickoff defines scope and DACE; the map identifies who's in the room; workback computes the schedule from the launch date; comms drafts the announcement.</p></div>
       <div class="chain"><h4><span class="d" style="background:var(--ops)"></span>Meeting to action</h4><div class="flow">zoom-meeting-summary → raid → comms</div><p>The transcript becomes a structured summary with action items; the RAID log absorbs the new items with owners; comms posts to the right channel.</p></div>
-      <div class="chain"><h4><span class="d" style="background:var(--comms)"></span>Quarterly planning</h4><div class="flow">business-case → roadmap-compare → capacity-plan → kickoff → decision</div><p>Business case validates each bet; roadmap compare detects collisions; capacity plan surfaces SPOFs; decision documents the portfolio call.</p></div>
-      <div class="chain"><h4><span class="d" style="background:#d9794a"></span>Incident to learning</h4><div class="flow">rca → retro → premortem → raid</div><p>RCA structures the timeline and corrective actions; retro captures reflections; premortem prevents recurrence; RAID absorbs the actions with target dates.</p></div>
+      <div class="chain"><h4><span class="d" style="background:var(--comms)"></span>Quarterly planning</h4><div class="flow">business-case → roadmap-compare → capacity-plan → kickoff → decision</div><p>Business case validates each bet; roadmap compare detects collisions; capacity plan surfaces SPOFs; kickoff spins up the funded programs; decision documents the portfolio call.</p></div>
+      <div class="chain"><h4><span class="d" style="background:var(--review)"></span>Incident to learning</h4><div class="flow">rca → retro → premortem → raid</div><p>RCA structures the timeline and corrective actions; retro captures reflections; premortem prevents recurrence; RAID absorbs the actions with target dates.</p></div>
     </div>
   </section>
 
@@ -314,7 +314,7 @@
     </div>
     <div class="grid4">
       <div class="rcard"><span class="ric">🔍</span><h4>Reliability primitives</h4><p>Verify-coverage checks, freshness gates on stale data, and provenance back to Slack / Smartsheet / Drive / Jira / Calendar. Every claim traces to a source.</p></div>
-      <div class="rcard"><span class="ric">🧪</span><h4>Eval harness</h4><p>Every skill is A/B tested against the same request with no skill loaded. If it isn't materially better than the base model, it doesn't ship.</p></div>
+      <div class="rcard"><span class="ric">🧪</span><h4>Eval harness</h4><p>Every skill is A/B tested on a real request — same input, with and without the skill loaded, outputs compared side by side. If the skill doesn't clearly beat the base model, it doesn't ship.</p></div>
       <div class="rcard"><span class="ric">📈</span><h4>Competency mapping</h4><p>Each skill maps to the TPM/PGM competency it builds, so delegated work also reinforces the competencies you're promoted on.</p></div>
       <div class="rcard"><span class="ric">🧠</span><h4>Program memory</h4><p>A per-program brief re-injected at run start, plus an append-only decisions ledger with mandatory evidence refs. Contradictions are surfaced, never silently resolved.</p></div>
     </div>
@@ -322,8 +322,9 @@
 
   <footer>
     <div class="foot">
-      <span class="badge"><span class="dot"></span>Illustrative demo · structure real, numbers not</span>
+      <span class="badge"><span class="dot"></span>Demo day illustrative · skills, triggers &amp; gate real</span>
       <span class="links">
+        <a href="https://adrianhills.github.io/writing/2026/ai-native-tpm-skills/">Why I built this</a>
         <a href="https://adrianhills.github.io/">Writing</a>
         <a href="https://www.linkedin.com/in/hillsadrian/" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://github.com/adrianhills/ai-pgm" target="_blank" rel="noopener">GitHub</a>
@@ -344,11 +345,11 @@ var human=[{t:9.0,t2:10.0,label:'standup'},{t:13.0,t2:14.0,label:'exec sync'},{t
 var sleep={from:23.0,to:30.5};
 var agents=[
   {t:9.4,label:'zoom-meeting-summary',sub:'standup recap + actions',trig:'event'},
-  {t:13.8,label:'comms draft',sub:'exec recap, 4 audiences',trig:'event',pair:true},
-  {t:16.9,label:'dependency-scan',sub:'PRD edit to critical path',trig:'event',running:true},
+  {t:13.83,label:'comms draft',sub:'exec recap, 4 audiences',trig:'event',pair:true},
+  {t:16.92,label:'dependency-scan',sub:'PRD edit to critical path',trig:'event',running:true},
   {t:19.0,label:'watchdog scan',sub:'4 programs swept',trig:'cron'},
   {t:24.0,label:'RAID binder sync',sub:'Jira + Smartsheet',trig:'cron'},
-  {t:27.0,label:'status-update x4',sub:'eng · LT · exec · all-hands',trig:'gate'},
+  {t:26.5,label:'status-update x4',sub:'one per program',trig:'gate'},
   {t:29.5,label:'inbox triage',sub:'on Slack event',trig:'event'}
 ];
 function render(animate){
@@ -400,7 +401,7 @@ function render(animate){
 var brief=[
   {type:'decide',t:'Decide',title:'Vendor slip on Program B',src:'dependency-scan · 4:55pm',why:' — your PRD edit moved the critical-path finish 4 business days; 2 downstream tasks now at risk.',state:'Options drafted',conf:'High',confCls:'good',raise:'Confirm the vendor’s revised date in writing to lock it.'},
   {type:'approve',t:'Approve',title:'Exec recap + status, 4 audiences',src:'comms · 1:50pm  +  status-update · 2:30am',why:' — drafted from the exec sync and this week’s signals, calibrated per audience.',state:'Drafted — awaiting your approval',conf:'High',confCls:'good',raise:'Skim the exec version; the rest mirror it.'},
-  {type:'review',t:'Review',title:'Silence pattern on Program D',src:'watchdog · 7:00pm',why:' — core team channel has been quiet 72h on business days.',state:'Flagged, not posted',conf:'Med',confCls:'warn',raise:'Heads-down sprint, or disengagement? One DM tells you.'}
+  {type:'review',t:'Review',title:'Silence pattern on Program D',src:'watchdog · 7:00pm',why:' — core team channel has been quiet for 3 business days.',state:'Flagged, not posted',conf:'Med',confCls:'warn',raise:'Heads-down sprint, or disengagement? One DM tells you.'}
 ];
 function renderBrief(){var h=[],i;for(i=0;i<brief.length;i++){var b=brief[i];
   h.push('<div class="bitem"><div class="bitem-head"><span class="btype '+b.type+'">'+b.t+'</span><span class="btitle">'+b.title+'</span><span class="bconf '+b.confCls+'">'+b.conf+' confidence</span></div>');
@@ -412,8 +413,8 @@ var PC={Plan:'var(--plan)',Ops:'var(--ops)',Risk:'var(--risk)',Comms:'var(--comm
 var PO={Plan:0,Ops:1,Risk:2,Comms:3,Review:4};
 var SKILLS=[
   {s:'tpm-rockstar',ph:'Ops',c:['Rigor'],t:'4–5 hrs / week',d:'Monday-morning standup — scans Slack, Jira, Smartsheet, RAID, and Drive for each program.'},
-  {s:'status-update',ph:'Ops',c:['Rigor','Change'],t:'90 min / update',d:'Program status updates at any altitude — ad-hoc, recurring LT doc, or leadership review prep.'},
-  {s:'kickoff',ph:'Plan',c:['Strategy'],t:'90 min / kickoff',d:'Kickoff agendas and program-brief one-pagers with DACE alignment; auto-routes between the two.'},
+  {s:'status-update',ph:'Ops',c:['Rigor','Change'],t:'35–40 min / update',d:'Program status updates at any altitude — ad-hoc, recurring LT doc, or leadership review prep.'},
+  {s:'kickoff',ph:'Plan',c:['Strategy'],t:'90 min / kickoff',d:'Kickoff agendas and program-brief one-pagers with DACE alignment — picks the right format for the ask.'},
   {s:'workback',ph:'Plan',c:['Rigor'],t:'90 min / program',d:'Backward-pass scheduling with benchmarks and a Smartsheet write.'},
   {s:'capacity-plan',ph:'Plan',c:['Strategy','Rigor'],t:'90 min / analysis',d:'Capacity vs. demand — staffing, SPOF detection, cross-BU capacity gaps.'},
   {s:'business-case',ph:'Plan',c:['Strategy'],t:'2–3 hrs / case',d:'Goal-aligned investment cases with hypothesis validation and ROI.'},
@@ -422,12 +423,12 @@ var SKILLS=[
   {s:'program-expert',ph:'Plan',c:['Strategy','Scale'],t:'30 min / question',d:'Per-program knowledge-base oracle — instantiate for any flagship program.'},
   {s:'raid',ph:'Risk',c:['Rigor'],t:'60 min / session',d:'RAID logs with probability-impact scoring and owner/date inference.'},
   {s:'premortem',ph:'Risk',c:['Domain','Rigor'],t:'2 hrs / session',d:'Gary Klein prospective hindsight — surface failure modes before launch.'},
-  {s:'dependency-scan',ph:'Risk',c:['Rigor','Domain'],t:'90 min / scan',d:'Map dependencies across PRDs, schedules, and Jira with L1/L2 ownership.'},
+  {s:'dependency-scan',ph:'Risk',c:['Rigor','Domain'],t:'90 min / scan',d:'Dependency maps across PRDs, schedules, and Jira with L1/L2 ownership.'},
   {s:'escalate',ph:'Risk',c:['Change'],t:'30 min / escalation',d:'Structured escalations with options, not just problems.'},
   {s:'launch-readiness',ph:'Risk',c:['Rigor'],t:'2–3 hrs / gate',d:'Cross-functional go/no-go gate — scored readiness with an executive approval draft.'},
   {s:'comms',ph:'Comms',c:['Change','Scale'],t:'30–45 min / session',d:'Unified stakeholder comms — drafts messages, triages Slack, writes recognition posts.'},
   {s:'decision',ph:'Comms',c:['Change','Strategy'],t:'90 min / decision',d:'Decision template with DACE roles and dual Slack posts.'},
-  {s:'zoom-meeting-summary',ph:'Review',c:['Domain','Rigor'],t:'20–30 min / mtg',d:'Summarize Zoom transcripts with action items and mini RAID logs.'},
+  {s:'zoom-meeting-summary',ph:'Review',c:['Domain','Rigor'],t:'20–30 min / mtg',d:'Zoom transcript summaries with action items and mini RAID logs.'},
   {s:'retro',ph:'Review',c:['Domain','Scale'],t:'60 min / retro',d:'4-area retrospective facilitation (Ray Sheen framework).'},
   {s:'rca',ph:'Review',c:['Domain'],t:'90 min / RCA',d:'Structured RCA with a 5-Why walkthrough and paste-ready output.'},
   {s:'stakeholder-map',ph:'Review',c:['Strategy','Change'],t:'2 hrs / program',d:'Power/interest grid + DACE mapping + engagement strategy.'}
