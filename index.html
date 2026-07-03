@@ -209,6 +209,7 @@
     </div>
     <div class="chips narrow">
       <span class="chip-s"><b>20</b> skills</span>
+      <span class="chip-s"><b>20+</b> hrs / week back</span>
       <span class="chip-s"><b>5</b> lifecycle phases</span>
       <span class="chip-s">day <b>+</b> overnight</span>
       <span class="chip-s"><b>1</b> human gate</span>
@@ -278,11 +279,11 @@
     </div>
     <div class="filters" style="margin-top:0">
       <span class="flabel">Competency</span>
-      <span class="chip cm" data-type="comp" data-val="Strategy">Strategy</span>
-      <span class="chip cm" data-type="comp" data-val="Rigor">Rigor</span>
-      <span class="chip cm" data-type="comp" data-val="Scale">Scale</span>
-      <span class="chip cm" data-type="comp" data-val="Change">Change</span>
-      <span class="chip cm" data-type="comp" data-val="Domain">Domain</span>
+      <span class="chip cm" data-type="comp" data-val="Strategy" title="Connect Strategy to Execution">Strategy</span>
+      <span class="chip cm" data-type="comp" data-val="Rigor" title="Execute with Rigor">Rigor</span>
+      <span class="chip cm" data-type="comp" data-val="Scale" title="Enable Scale &amp; Velocity">Scale</span>
+      <span class="chip cm" data-type="comp" data-val="Change" title="Lead Change">Change</span>
+      <span class="chip cm" data-type="comp" data-val="Domain" title="Technical Domain Expertise">Domain</span>
       <span class="count" id="count"></span>
     </div>
     <div class="skill-list" id="skillList"></div>
@@ -297,12 +298,13 @@
       <p class="sec-sub">The leverage isn't any single skill — it's the chains, where one skill's output is the next one's input.</p>
     </div>
     <div class="grid2">
-      <div class="chain"><h4><span class="d" style="background:var(--plan)"></span>Weekly operating rhythm</h4><div class="flow">tpm-rockstar → comms → status-update</div><p>The brief surfaces what shifted; comms triages the inbox and drafts replies; status-update drafts the executive summary.</p></div>
-      <div class="chain"><h4><span class="d" style="background:var(--risk)"></span>Risk escalation path</h4><div class="flow">tpm-rockstar → raid → premortem → escalate → decision</div><p>The brief detects the signal, RAID captures it, premortem stress-tests failure modes, escalation flags leadership with options, decision documents the call.</p></div>
-      <div class="chain"><h4><span class="d" style="background:var(--review)"></span>New program launch</h4><div class="flow">kickoff → stakeholder-map → workback → comms</div><p>Kickoff defines scope and DACE; the map identifies who's in the room; workback computes the schedule from the launch date; comms drafts the announcement.</p></div>
-      <div class="chain"><h4><span class="d" style="background:var(--ops)"></span>Meeting to action</h4><div class="flow">zoom-meeting-summary → raid → comms</div><p>The transcript becomes a structured summary with action items; the RAID log absorbs the new items with owners; comms posts to the right channel.</p></div>
-      <div class="chain"><h4><span class="d" style="background:var(--comms)"></span>Quarterly planning</h4><div class="flow">business-case → roadmap-compare → capacity-plan → kickoff → decision</div><p>Business case validates each bet; roadmap compare detects collisions; capacity plan surfaces SPOFs; kickoff spins up the funded programs; decision documents the portfolio call.</p></div>
-      <div class="chain"><h4><span class="d" style="background:var(--review)"></span>Incident to learning</h4><div class="flow">rca → retro → premortem → raid</div><p>RCA structures the timeline and corrective actions; retro captures reflections; premortem prevents recurrence; RAID absorbs the actions with target dates.</p></div>
+      <div class="chain"><h4><span class="d" style="background:var(--plan)"></span>Weekly operating rhythm</h4><div class="flow">tpm-rockstar → comms (triage) → status-update</div><p>The chief-of-staff brief surfaces what shifted and drafts replies; triage prioritizes the inbox sweep; status-update drafts the executive summary.</p></div>
+      <div class="chain"><h4><span class="d" style="background:var(--risk)"></span>Risk escalation path</h4><div class="flow">tpm-rockstar → raid → premortem → escalate → decision</div><p>The brief detects the signal, RAID captures it, premortem stress-tests the failure modes, escalation flags leadership with options, decision documents the resolution with DACE roles.</p></div>
+      <div class="chain"><h4><span class="d" style="background:var(--review)"></span>New program launch</h4><div class="flow">kickoff (brief) → stakeholder-map → workback → kickoff (agenda) → comms</div><p>The brief defines scope and DACE; stakeholder map identifies who's in the room; workback computes the schedule from the launch date; the kickoff agenda runs the room; comms drafts the announcement.</p></div>
+      <div class="chain"><h4><span class="d" style="background:var(--ops)"></span>Meeting to action</h4><div class="flow">zoom-meeting-summary → raid → comms</div><p>The transcript becomes a structured summary with action items and a mini RAID; the RAID log absorbs the new items with owners; comms posts to the right channel.</p></div>
+      <div class="chain"><h4><span class="d" style="background:var(--ops)"></span>Program close</h4><div class="flow">retro → comms (spotlight) → roadmap-compare</div><p>Retro captures lessons; spotlight recognizes contributors; roadmap compare feeds the lessons into the next planning cycle.</p></div>
+      <div class="chain"><h4><span class="d" style="background:var(--comms)"></span>Quarterly planning</h4><div class="flow">business-case → roadmap-compare → capacity-plan → kickoff (brief) → decision</div><p>Business case validates each bet; roadmap compare detects collisions; capacity plan surfaces SPOFs; kickoff briefs scope the approved bets; decision documents the portfolio call.</p></div>
+      <div class="chain"><h4><span class="d" style="background:var(--review)"></span>Incident to learning</h4><div class="flow">rca → retro → premortem → raid</div><p>RCA structures the timeline and corrective actions; retro captures broader reflections; premortem applies the learnings to prevent recurrence; RAID absorbs the corrective actions with target dates.</p></div>
     </div>
   </section>
 
@@ -315,7 +317,7 @@
     <div class="grid4">
       <div class="rcard"><span class="ric">🔍</span><h4>Reliability primitives</h4><p>Verify-coverage checks, freshness gates on stale data, and provenance back to Slack / Smartsheet / Drive / Jira / Calendar. Every claim traces to a source.</p></div>
       <div class="rcard"><span class="ric">🧪</span><h4>Eval harness</h4><p>Every skill is A/B tested on a real request — same input, with and without the skill loaded, outputs compared side by side. If the skill doesn't clearly beat the base model, it doesn't ship.</p></div>
-      <div class="rcard"><span class="ric">📈</span><h4>Competency mapping</h4><p>Each skill maps to the TPM/PGM competency it builds, so delegated work also reinforces the competencies you're promoted on.</p></div>
+      <div class="rcard"><span class="ric">📈</span><h4>Career competency mapping</h4><p>Each skill maps to the TPM/PGM career competencies it builds, so delegated work also reinforces the competencies you're promoted on.</p></div>
       <div class="rcard"><span class="ric">🧠</span><h4>Program memory</h4><p>A per-program brief re-injected at run start, plus an append-only decisions ledger with mandatory evidence refs. Contradictions are surfaced, never silently resolved.</p></div>
     </div>
   </section>
@@ -412,21 +414,21 @@ function renderBrief(){var h=[],i;for(i=0;i<brief.length;i++){var b=brief[i];
 var PC={Plan:'var(--plan)',Ops:'var(--ops)',Risk:'var(--risk)',Comms:'var(--comms)',Review:'var(--review)'};
 var PO={Plan:0,Ops:1,Risk:2,Comms:3,Review:4};
 var SKILLS=[
-  {s:'tpm-rockstar',ph:'Ops',c:['Rigor'],t:'4–5 hrs / week',d:'Monday-morning standup — scans Slack, Jira, Smartsheet, RAID, and Drive for each program.'},
-  {s:'status-update',ph:'Ops',c:['Rigor','Change'],t:'35–40 min / update',d:'Program status updates at any altitude — ad-hoc, recurring LT doc, or leadership review prep.'},
+  {s:'tpm-rockstar',ph:'Ops',c:['Rigor'],t:'4–5 hrs / week',d:'Daily chief-of-staff brief — scans Slack, Jira, Smartsheet, RAID, Drive, and Calendar for each program.'},
+  {s:'status-update',ph:'Ops',c:['Rigor','Change'],t:'90 min / update',d:'Program status updates at any altitude — ad-hoc, recurring LT doc section, or leadership review prep.'},
   {s:'kickoff',ph:'Plan',c:['Strategy'],t:'90 min / kickoff',d:'Kickoff agendas and program-brief one-pagers with DACE alignment — picks the right format for the ask.'},
   {s:'workback',ph:'Plan',c:['Rigor'],t:'90 min / program',d:'Backward-pass scheduling with benchmarks and a Smartsheet write.'},
-  {s:'capacity-plan',ph:'Plan',c:['Strategy','Rigor'],t:'90 min / analysis',d:'Capacity vs. demand — staffing, SPOF detection, cross-BU capacity gaps.'},
+  {s:'capacity-plan',ph:'Plan',c:['Strategy','Rigor'],t:'90 min / analysis',d:'Capacity vs. demand analysis — staffing, SPOF detection, cross-BU capacity gaps.'},
   {s:'business-case',ph:'Plan',c:['Strategy'],t:'2–3 hrs / case',d:'Goal-aligned investment cases with hypothesis validation and ROI.'},
-  {s:'roadmap-compare',ph:'Plan',c:['Domain','Strategy'],t:'2 hrs / review',d:'Cross-program roadmap conflict detection and resource contention.'},
+  {s:'roadmap-compare',ph:'Plan',c:['Domain','Strategy'],t:'2 hrs / portfolio review',d:'Cross-program roadmap conflict detection and resource contention.'},
   {s:'prd-review',ph:'Plan',c:['Domain'],t:'60 min / review',d:'PRD/BRD completeness validation against company standards.'},
   {s:'program-expert',ph:'Plan',c:['Strategy','Scale'],t:'30 min / question',d:'Per-program knowledge-base oracle — instantiate for any flagship program.'},
   {s:'raid',ph:'Risk',c:['Rigor'],t:'60 min / session',d:'RAID logs with probability-impact scoring and owner/date inference.'},
   {s:'premortem',ph:'Risk',c:['Domain','Rigor'],t:'2 hrs / session',d:'Gary Klein prospective hindsight — surface failure modes before launch.'},
   {s:'dependency-scan',ph:'Risk',c:['Rigor','Domain'],t:'90 min / scan',d:'Dependency maps across PRDs, schedules, and Jira with L1/L2 ownership.'},
   {s:'escalate',ph:'Risk',c:['Change'],t:'30 min / escalation',d:'Structured escalations with options, not just problems.'},
-  {s:'launch-readiness',ph:'Risk',c:['Rigor'],t:'2–3 hrs / gate',d:'Cross-functional go/no-go gate — scored readiness with an executive approval draft.'},
-  {s:'comms',ph:'Comms',c:['Change','Scale'],t:'30–45 min / session',d:'Unified stakeholder comms — drafts messages, triages Slack, writes recognition posts.'},
+  {s:'launch-readiness',ph:'Risk',c:['Rigor'],t:'2–3 hrs / gate',d:'Cross-functional go/no-go gate — scored readiness across departments with an executive approval draft.'},
+  {s:'comms',ph:'Comms',c:['Change','Scale'],t:'30–45 min / session',d:'Unified stakeholder comms — drafts messages, triages Slack, writes recognition and change-mgmt posts.'},
   {s:'decision',ph:'Comms',c:['Change','Strategy'],t:'90 min / decision',d:'Decision template with DACE roles and dual Slack posts.'},
   {s:'zoom-meeting-summary',ph:'Review',c:['Domain','Rigor'],t:'20–30 min / mtg',d:'Zoom transcript summaries with action items and mini RAID logs.'},
   {s:'retro',ph:'Review',c:['Domain','Scale'],t:'60 min / retro',d:'4-area retrospective facilitation (Ray Sheen framework).'},
