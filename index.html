@@ -257,7 +257,7 @@
         <p>Anything that posts or decides stops at me. The agent drafts and queues; I approve. Sev-1/2 and external comms are always mine.</p>
       </div>
     </div>
-    <p class="ground"><b>Quiet is the default.</b> Agents act only when something crosses a threshold — so most of what they do, I never have to see. The demo is grounded in my real <b>watchdog</b> skill — the scheduled runner behind <b>tpm-rockstar</b> in the catalog below — which scans in <b>Supervised Execute</b> mode and logs every run to <code>log.ndjson</code>. Illustrative numbers; the structure — triggers, parallelism, the human gate — is real.</p>
+    <p class="ground"><b>Quiet is the default.</b> Agents act only when something crosses a threshold — so most of what they do, I never have to see. The demo is grounded in my real <b>watchdog</b> skill — the push-mode companion to <b>tpm-rockstar</b> in the catalog below — which scans in <b>Supervised Execute</b> mode and logs every run to <code>log.ndjson</code>. Illustrative numbers; the structure — triggers, parallelism, the human gate — is real.</p>
   </section>
 </div>
 
@@ -414,26 +414,26 @@ function renderBrief(){var h=[],i;for(i=0;i<brief.length;i++){var b=brief[i];
 var PC={Plan:'var(--plan)',Ops:'var(--ops)',Risk:'var(--risk)',Comms:'var(--comms)',Review:'var(--review)'};
 var PO={Plan:0,Ops:1,Risk:2,Comms:3,Review:4};
 var SKILLS=[
-  {s:'tpm-rockstar',ph:'Ops',c:['Rigor'],t:'4–5 hrs / week',d:'Daily chief-of-staff brief — scans Slack, Jira, Smartsheet, RAID, Drive, and Calendar for each program.'},
-  {s:'status-update',ph:'Ops',c:['Rigor','Change'],t:'90 min / update',d:'Program status updates at any altitude — ad-hoc, recurring LT doc section, or leadership review prep.'},
+  {s:'tpm-rockstar',ph:'Ops',c:['Rigor'],t:'4–5 hrs / week',d:'Chief-of-staff brief, run as a morning standup, midday delta, or pre-meeting refresh — scans Slack, Jira, Smartsheet, RAID, Drive, and Calendar, then DMs a prioritized brief: program health, unanswered messages, open actions, meeting prep.'},
+  {s:'status-update',ph:'Ops',c:['Rigor','Change'],t:'90 min / update',d:'Smart Brevity status updates at any altitude — ad-hoc, a recurring leadership-doc section, or leadership-review prep — with a read-it-aloud length check before it ships.'},
   {s:'kickoff',ph:'Plan',c:['Strategy'],t:'90 min / kickoff',d:'Kickoff agendas and program-brief one-pagers with DACE alignment — picks the right format for the ask.'},
-  {s:'workback',ph:'Plan',c:['Rigor'],t:'90 min / program',d:'Backward-pass scheduling with benchmarks and a Smartsheet write.'},
-  {s:'capacity-plan',ph:'Plan',c:['Strategy','Rigor'],t:'90 min / analysis',d:'Capacity vs. demand analysis — staffing, SPOF detection, cross-BU capacity gaps.'},
-  {s:'business-case',ph:'Plan',c:['Strategy'],t:'2–3 hrs / case',d:'Goal-aligned investment cases with hypothesis validation and ROI.'},
-  {s:'roadmap-compare',ph:'Plan',c:['Domain','Strategy'],t:'2 hrs / portfolio review',d:'Cross-program roadmap conflict detection and resource contention.'},
-  {s:'prd-review',ph:'Plan',c:['Domain'],t:'60 min / review',d:'PRD/BRD completeness validation against company standards.'},
-  {s:'program-expert',ph:'Plan',c:['Strategy','Scale'],t:'30 min / question',d:'Per-program knowledge-base oracle — instantiate for any flagship program.'},
-  {s:'raid',ph:'Risk',c:['Rigor'],t:'60 min / session',d:'RAID logs with probability-impact scoring and owner/date inference.'},
-  {s:'premortem',ph:'Risk',c:['Domain','Rigor'],t:'2 hrs / session',d:'Gary Klein prospective hindsight — surface failure modes before launch.'},
-  {s:'dependency-scan',ph:'Risk',c:['Rigor','Domain'],t:'90 min / scan',d:'Dependency maps across PRDs, schedules, and Jira with L1/L2 ownership.'},
-  {s:'escalate',ph:'Risk',c:['Change'],t:'30 min / escalation',d:'Structured escalations with options, not just problems.'},
-  {s:'launch-readiness',ph:'Risk',c:['Rigor'],t:'2–3 hrs / gate',d:'Cross-functional go/no-go gate — scored readiness across departments with an executive approval draft.'},
+  {s:'workback',ph:'Plan',c:['Rigor'],t:'90 min / program',d:'Backward-pass scheduling from the launch date, calibrated against historical duration benchmarks, written straight to Smartsheet — lanes that run long get flagged.'},
+  {s:'capacity-plan',ph:'Plan',c:['Strategy','Rigor'],t:'90 min / analysis',d:'Capacity vs. demand from Smartsheet assignments, Jira velocity, and headcount — surfaces over-allocation, single points of failure, and cross-team capacity gaps.'},
+  {s:'business-case',ph:'Plan',c:['Strategy'],t:'2–3 hrs / case',d:'Goal-aligned investment cases — validates the PRD’s hypothesis against evidence, maps outcomes to team success metrics, and weighs portfolio trade-offs and ROI.'},
+  {s:'roadmap-compare',ph:'Plan',c:['Domain','Strategy'],t:'2 hrs / portfolio review',d:'Cross-program roadmap comparison across Smartsheet, Sheets, and Jira — timeline collisions, resource contention, and downstream impact.'},
+  {s:'prd-review',ph:'Plan',c:['Domain'],t:'60 min / review',d:'PRD/BRD review for completeness and dependency coverage against company standards — plus experiment-design checks and A/B results readouts.'},
+  {s:'program-expert',ph:'Plan',c:['Strategy','Scale'],t:'30 min / question',d:'Template for a per-program knowledge-base oracle — instantiate once per flagship program so every other skill starts with full context.'},
+  {s:'stakeholder-map',ph:'Plan',c:['Strategy','Change'],t:'2 hrs / program',d:'Power/interest grid, sentiment, and DACE mapping, with an engagement strategy grounded in how each stakeholder actually engages.'},
+  {s:'raid',ph:'Risk',c:['Rigor'],t:'60 min / session',d:'Build, seed, or update RAID logs with probability-impact scoring and owner/date inference.'},
+  {s:'premortem',ph:'Risk',c:['Domain','Rigor'],t:'2 hrs / session',d:'Gary Klein prospective hindsight — surface the failure modes people wouldn’t normally voice, before launch.'},
+  {s:'dependency-scan',ph:'Risk',c:['Rigor','Domain'],t:'90 min / scan',d:'Dependency maps across PRDs, Jira, Smartsheet schedules, and Slack, with L1/L2 team ownership.'},
+  {s:'escalate',ph:'Risk',c:['Change'],t:'30 min / escalation',d:'Structured escalations with options, not just problems — and a clear ask for the decision-maker.'},
+  {s:'launch-readiness',ph:'Risk',c:['Rigor','Change'],t:'2–3 hrs / gate',d:'Cross-functional go/no-go gate — scores readiness across 17 departments into GO / GO WITH CONDITIONS / NO-GO, flags unmitigated risks, and drafts the executive approval.'},
   {s:'comms',ph:'Comms',c:['Change','Scale'],t:'30–45 min / session',d:'Unified stakeholder comms — drafts messages, triages Slack, writes recognition and change-mgmt posts.'},
-  {s:'decision',ph:'Comms',c:['Change','Strategy'],t:'90 min / decision',d:'Decision template with DACE roles and dual Slack posts.'},
-  {s:'zoom-meeting-summary',ph:'Review',c:['Domain','Rigor'],t:'20–30 min / mtg',d:'Zoom transcript summaries with action items and mini RAID logs.'},
-  {s:'retro',ph:'Review',c:['Domain','Scale'],t:'60 min / retro',d:'4-area retrospective facilitation (Ray Sheen framework).'},
-  {s:'rca',ph:'Review',c:['Domain'],t:'90 min / RCA',d:'Structured RCA with a 5-Why walkthrough and paste-ready output.'},
-  {s:'stakeholder-map',ph:'Review',c:['Strategy','Change'],t:'2 hrs / program',d:'Power/interest grid + DACE mapping + engagement strategy.'}
+  {s:'decision',ph:'Comms',c:['Change','Strategy'],t:'90 min / decision',d:'Formal decision records — options with pros and cons, DACE roles, the driver’s recommendation, and dual Slack posts to the team and leadership channels.'},
+  {s:'zoom-meeting-summary',ph:'Review',c:['Domain','Rigor'],t:'20–30 min / mtg',d:'Zoom transcript summaries with attendees, decisions, action items, and a mini RAID log.'},
+  {s:'retro',ph:'Review',c:['Domain','Scale'],t:'60 min / retro',d:'4-area retrospective (Ray Sheen, HBR Guide to Project Management) that turns lessons into owned action items, not venting.'},
+  {s:'rca',ph:'Review',c:['Domain'],t:'90 min / RCA',d:'Root cause analysis with a 5×5 branching Why matrix, not a single chain — for incidents or missed milestones, as a full write-up or a meeting-prep shell.'}
 ].sort(function(a,b){return PO[a.ph]-PO[b.ph];});
 var fil={phase:{},comp:{}};
 function nf(o){var k,n=0;for(k in o){if(o[k]){n++;}}return n;}
